@@ -6,4 +6,5 @@ import (
 
 func main() {
 	arrays.RunTests_HasDuplicateNums()
+	arrays.RunTests_IsAnagram()
 }
