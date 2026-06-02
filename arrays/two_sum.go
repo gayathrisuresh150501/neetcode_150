@@ -5,18 +5,18 @@ import (
 	"reflect"
 )
 
-func TwoSum[T comparable](nums []T) []int {
-	hashSet := make(map[T]int, len(nums))
+func TwoSum(nums []int, target int) []int {
+	hashSet := make(map[int]int, len(nums))
 
 	for idx, num := range nums {
-		if i, ok := hashSet[num]; ok {
-			return []int{idx, i}
+		if i, ok := hashSet[target - num]; ok {
+			return []int{i, idx}
 		}
 
 		hashSet[num] = idx
 	}
 
-	return nil
+	return []int{}
 }
 
 func RunTests_TwoSum() {
@@ -48,7 +48,7 @@ func RunTests_TwoSum() {
 			"no sum values",
 			[]int{1, 2, 3, 3, 4},
 			11,
-			nil,
+			[]int{},
 		},
 		{
 			"input with negative values",
@@ -61,18 +61,18 @@ func RunTests_TwoSum() {
 	passed := 0
 	failed := 0
 
-	fmt.Println("=== Running HasDuplicateNums Tests ===")
+	fmt.Println("=== Running TwoSum Tests ===")
 
 	for _, tc := range tests {
-		got := TwoSum(tc.input)
+		got := TwoSum(tc.input, tc.target)
 
 		if reflect.DeepEqual(got, tc.result) {
+			fmt.Printf("PASS: %s\n", tc.name)
+			passed += 1
+		} else {
 			fmt.Printf("%s: expected %v, got %v\n",
 				tc.name, tc.result, got)
 			failed += 1
-		} else {
-			fmt.Printf("PASS: %s\n", tc.name)
-			passed += 1
 		}
 	}
 
