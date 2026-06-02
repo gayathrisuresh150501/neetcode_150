@@ -1,46 +1,60 @@
 package arrays
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
-func HasDuplicateNums[T comparable](nums []T) bool {
-	hashSet := make(map[T]struct{}, len(nums))
+func TwoSum[T comparable](nums []T) []int {
+	hashSet := make(map[T]int, len(nums))
 
-	for _, v := range nums {
-		if _, ok := hashSet[v]; ok {
-			return true
+	for idx, num := range nums {
+		if i, ok := hashSet[num]; ok {
+			return []int{idx, i}
 		}
 
-		hashSet[v] = struct{}{}
+		hashSet[num] = idx
 	}
 
-	return false
+	return nil
 }
 
-func RunTests_HasDuplicateNums() {
+func RunTests_TwoSum() {
 	tests := []struct {
 		name   string
 		input  []int
-		result bool
+		target int
+		result []int
 	}{
 		{
 			"empty slice",
 			[]int{},
-			false,
+			3,
+			[]int{},
 		},
 		{
 			"nil slice",
 			nil,
-			false,
+			3,
+			[]int{},
 		},
 		{
-			"unique values",
+			"with sum values",
 			[]int{1, 2, 3, 4},
-			false,
+			6,
+			[]int{1, 3},
 		},
 		{
-			"duplicate values",
+			"no sum values",
 			[]int{1, 2, 3, 3, 4},
-			true,
+			11,
+			nil,
+		},
+		{
+			"input with negative values",
+			[]int{-1, 2, -2, 4},
+			-3,
+			[]int{0, 2},
 		},
 	}
 
@@ -50,10 +64,9 @@ func RunTests_HasDuplicateNums() {
 	fmt.Println("=== Running HasDuplicateNums Tests ===")
 
 	for _, tc := range tests {
-		got := HasDuplicateNums(tc.input)
+		got := TwoSum(tc.input)
 
-		if got != tc.result {
-			// fmt.Println(tc.name)
+		if reflect.DeepEqual(got, tc.result) {
 			fmt.Printf("%s: expected %v, got %v\n",
 				tc.name, tc.result, got)
 			failed += 1
