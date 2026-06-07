@@ -3,7 +3,6 @@ package arrays
 import (
 	"fmt"
 	"reflect"
-	"sort"
 )
 
 func GroupAnagrams(strs []string) [][]string {
@@ -24,28 +23,12 @@ func GroupAnagrams(strs []string) [][]string {
 	}
 
 	result := make([][]string, 0, len(groups))
-	
+
 	for _, group := range groups {
 		result = append(result, group)
 	}
 
 	return result
-}
-
-func normalizeGroups(groups [][]string) [][]string {
-	for _, group := range groups {
-		sort.Strings(group)
-	}
-
-	sort.Slice(groups, func(i, j int) bool {
-		if len(groups[i]) == 0 || len(groups[j]) == 0 {
-			return len(groups[i]) < len(groups[j])
-		}
-
-		return groups[i][0] < groups[j][0]
-	})
-
-	return groups
 }
 
 func RunTests_GroupAnagrams() {
@@ -103,9 +86,7 @@ func RunTests_GroupAnagrams() {
 
 	for _, tc := range tests {
 		got := GroupAnagrams(tc.input)
-
-		got = normalizeGroups(got)
-		expected := normalizeGroups(tc.result)
+		expected := tc.result
 
 		if reflect.DeepEqual(got, expected) {
 			fmt.Printf("PASS: %s\n", tc.name)
